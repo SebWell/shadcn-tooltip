@@ -1,26 +1,26 @@
 {
   "name": "shadcn-tooltip",
   "version": "1.0.0",
-  "description": "Shadcn/UI Tooltip component for Weweb",
-  "main": "src/Tooltip.vue",
+  "description": "Shadcn/UI tooltip component for Weweb",
+  "main": "src/tooltip.vue",
+  "weweb": {
+    "componentPath": "./src/tooltip.vue"
+  },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "serve": "webpack serve --mode development",
+    "build": "webpack --mode production"
   },
   "keywords": [
     "weweb",
     "shadcn",
     "ui",
-    "Tooltip",
+    "tooltip",
     "vue",
     "component"
   ],
-  "author": "Shadcn/UI for Weweb Community",
+  "author": "Shadcn/UI for Weweb",
   "license": "MIT",
   "dependencies": {
     "vue": "^3.3.4"
-  },
-  "devDependencies": {
-    "@vue/cli-service": "^5.0.8"
   }
 }
