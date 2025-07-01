@@ -7,11 +7,11 @@
       @mouseleave="handleMouseLeave"
       @focus="handleFocus"
       @blur="handleBlur"
-      :class="cn('inline-block', triggerClass)"
-      :tabindex="disabled ? -1 : 0"
+      :class="cn('inline-block', content.triggerClass)"
+      :tabindex="content.disabled ? -1 : 0"
     >
       <slot>
-        <span>{{ triggerText || 'Hover me' }}</span>
+        <span>{{ content.triggerText || 'Hover me' }}</span>
       </slot>
     </div>
 
@@ -25,14 +25,14 @@
         :class="cn(
           'absolute z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95',
           placementClasses,
-          size === 'sm' && 'px-2 py-1 text-xs',
-          size === 'lg' && 'px-4 py-2',
-          customClass
+          content.size === 'sm' && 'px-2 py-1 text-xs',
+          content.size === 'lg' && 'px-4 py-2',
+          content.customClass
         )"
       >
         <!-- Arrow -->
         <div
-          v-if="showArrow !== false"
+          v-if="content.showArrow !== false"
           :class="cn(
             'absolute h-2 w-2 rotate-45 border bg-popover',
             arrowClasses
@@ -41,7 +41,7 @@
 
         <!-- Content -->
         <div>
-          {{ text || content }}
+          {{ content.text || content.content }}
         </div>
       </div>
     </Teleport>
@@ -68,7 +68,7 @@ const showTimer = ref(null)
 const hideTimer = ref(null)
 
 // Computed
-const placement = computed(() => props.placement || 'top')
+const placement = computed(() => props.content.placement || 'top')
 
 const placementClasses = computed(() => {
   const classes = {
@@ -92,7 +92,7 @@ const arrowClasses = computed(() => {
 
 // Methods
 const showTooltip = async () => {
-  if (props.disabled || !props.text && !props.content) return
+  if (props.content.disabled || !props.content.text && !props.content.content) return
   
   clearTimeout(hideTimer.value)
   
@@ -100,7 +100,7 @@ const showTooltip = async () => {
     isVisible.value = true
     await nextTick()
     updatePosition()
-  }, props.delay || 700)
+  }, props.content.delay || 700)
 }
 
 const hideTooltip = () => {
@@ -108,29 +108,29 @@ const hideTooltip = () => {
   
   hideTimer.value = setTimeout(() => {
     isVisible.value = false
-  }, props.hideDelay || 300)
+  }, props.content.hideDelay || 300)
 }
 
 const handleMouseEnter = () => {
-  if (props.trigger === 'hover' || !props.trigger) {
+  if (props.content.trigger === 'hover' || !props.content.trigger) {
     showTooltip()
   }
 }
 
 const handleMouseLeave = () => {
-  if (props.trigger === 'hover' || !props.trigger) {
+  if (props.content.trigger === 'hover' || !props.content.trigger) {
     hideTooltip()
   }
 }
 
 const handleFocus = () => {
-  if (props.trigger === 'focus' || props.trigger === 'hover' || !props.trigger) {
+  if (props.content.trigger === 'focus' || props.content.trigger === 'hover' || !props.content.trigger) {
     showTooltip()
   }
 }
 
 const handleBlur = () => {
-  if (props.trigger === 'focus' || props.trigger === 'hover' || !props.trigger) {
+  if (props.content.trigger === 'focus' || props.content.trigger === 'hover' || !props.content.trigger) {
     hideTooltip()
   }
 }
@@ -143,7 +143,7 @@ const updatePosition = () => {
   const viewportWidth = window.innerWidth
   const viewportHeight = window.innerHeight
   
-  const offset = props.offset || 8
+  const offset = props.content.offset || 8
   let top, left
   
   switch (placement.value) {
